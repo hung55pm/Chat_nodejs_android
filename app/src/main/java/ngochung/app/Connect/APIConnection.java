@@ -21,11 +21,11 @@ import ngochung.app.Constants.Constants;
  */
 public class APIConnection {
 
-    public static void login(Context context, final JSONObjectRequestListener callback) throws JSONException {
+    public static void login(Context context,String phone,String pass, final JSONObjectRequestListener callback) throws JSONException {
 
         final JSONObject jsonBody = new JSONObject();
-        jsonBody.put("employee_code","hungdn@vinnet.vn");
-        jsonBody.put("password","123456");
+        jsonBody.put(Constants.PHONE,phone);
+        jsonBody.put(Constants.PASSWORD,pass);
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, Constants.URL_LOGIN, jsonBody, new Response.Listener<JSONObject>() {
 

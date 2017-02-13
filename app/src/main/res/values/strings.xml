@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Chat_Nodejs_Android</string>
+    <string name="wellcome_splash">Wellcome to app chat</string>
+    <string name="wellcome_to_login">Wellcome to login</string>
+    <string name="numbe_phone">Number phone</string>
+    <string name="password">Password</string>
+    <string name="register">Register</string>
+    <string name="forgot_password">Forgot password ? </string>
+    <string name="login">Login</string>
+    <string name="err">An error occurred, please try again</string>
 </resources>
