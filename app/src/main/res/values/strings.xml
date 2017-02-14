@@ -2,10 +2,23 @@
     <string name="app_name">Chat_Nodejs_Android</string>
     <string name="wellcome_splash">Wellcome to app chat</string>
     <string name="wellcome_to_login">Wellcome to login</string>
+    <string name="wellcome_to_register">Wellcome to register</string>
     <string name="numbe_phone">Number phone</string>
     <string name="password">Password</string>
+    <string name="Re_type_password">Re-type Password</string>
     <string name="register">Register</string>
     <string name="forgot_password">Forgot password ? </string>
     <string name="login">Login</string>
+    <string name="login_fail">Login fail</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
     <string name="err">An error occurred, please try again</string>
+    <string name="parameter_missing">You must complete the information</string>
+    <string name="password_not_same">Passwords do not match</string>
+    <string name="register_success">Register success</string>
+    <string name="register_fail">Register fail</string>
+    <string name="retrieve_data_error">Retrieve_data_error</string>
+    <string name="not_connect_internet">No network connection</string>
+    <string name="try_again">Try</string>
+    <string name="exit">Exit</string>
 </resources>

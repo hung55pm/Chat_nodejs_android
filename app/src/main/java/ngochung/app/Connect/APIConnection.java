@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ngochung.app.Constants.Constants;
+import ngochung.app.Models.Acounts;
 
 /**
  * Created by HoangTien on 3/26/16.
@@ -51,6 +52,38 @@ public class APIConnection {
         };
         MySingleton.getInstance(context).addToRequestQueue(jsObjRequest);
     }
+    public static void register(Context context, Acounts acounts, final JSONObjectRequestListener callback) throws JSONException {
 
+        final JSONObject jsonBody = new JSONObject();
+        jsonBody.put(Constants.PHONE,acounts.getUser_id());
+        jsonBody.put(Constants.PASSWORD,acounts.getPassword());
+        jsonBody.put(Constants.NAME,acounts.getName());
+        jsonBody.put(Constants.EMAIL,acounts.getEmail());
+
+
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, Constants.URL_REGISTER, jsonBody, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                callback.onSuccess(response);
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                callback.onError(error);
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/json");
+                params.put("charset", "utf-8");
+                return params;
+            }
+        };
+        MySingleton.getInstance(context).addToRequestQueue(jsObjRequest);
+    }
 
 }

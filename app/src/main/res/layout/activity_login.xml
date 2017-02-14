@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_login"
-    android:background="@color/colorsplash"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorsplash"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -13,128 +13,107 @@
     tools:context="ngochung.app.chat_nodejs_android.LoginActivity">
 
     <ImageView
+        android:id="@+id/imageView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/logo"
-        android:layout_marginTop="43dp"
-        android:id="@+id/imageView2"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="43dp"
+        android:src="@mipmap/logo" />
 
     <LinearLayout
-        android:padding="8dp"
-        android:layout_marginLeft="50dp"
-        android:background="@mipmap/background_ed_user"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:id="@+id/linearLayout"
+        style="@style/layout_login"
         android:layout_below="@+id/imageView2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="72dp"
-        android:id="@+id/linearLayout">
+        android:layout_marginTop="72dp">
 
         <ImageView
+            android:id="@+id/imageView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/icon_user"
-            android:id="@+id/imageView3"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:src="@mipmap/icon_user" />
 
         <EditText
-            android:inputType="phone"
-            android:textColorHint="@color/colorwhite"
-            android:layout_gravity="center"
-            android:background="#00000000"
-            android:textColor="@color/colorwhite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="@string/numbe_phone"
-            android:ems="10"
             android:id="@+id/txt_phone"
-            android:layout_weight="1" />
+            style="@style/edittext_login"
+            android:ems="10"
+            android:hint="@string/numbe_phone"
+            android:inputType="phone"
+      />
     </LinearLayout>
 
     <TextView
-        android:textColor="@color/colorwhite"
-        android:textSize="20sp"
-        android:text="@string/wellcome_to_login"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/imageView2"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="23dp"
-        android:id="@+id/textView" />
+        android:text="@string/wellcome_to_login"
+        android:textColor="@color/colorwhite"
+        android:textSize="20sp" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:background="@mipmap/background_ed_user"
-        android:padding="8dp"
-        android:layout_marginLeft="50dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
+        style="@style/layout_login"
         android:layout_below="@+id/linearLayout"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+     >
 
         <ImageView
+            android:id="@+id/imageView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/icon_pass"
-            android:id="@+id/imageView4"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:src="@mipmap/icon_pass" />
 
         <EditText
-            android:textColorHint="@color/colorwhite"
-            android:layout_gravity="center"
-            android:background="#00000000"
-            android:textColor="@color/colorwhite"
-            android:hint="@string/password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:ems="10"
+            style="@style/edittext_login"
             android:id="@+id/txt_password"
-            android:layout_weight="1" />
+            android:ems="10"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            />
     </LinearLayout>
 
     <Button
-        android:textSize="20dp"
-        android:textColor="@color/colorwhite"
-        android:background="@mipmap/background_bt"
-        android:text="@string/login"
+        android:id="@+id/bt_login"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
-        android:layout_marginTop="10dp"
-        android:id="@+id/bt_login"
-        android:layout_below="@+id/linearLayout2"
+        android:layout_alignEnd="@+id/linearLayout2"
         android:layout_alignLeft="@+id/linearLayout2"
-        android:layout_alignStart="@+id/linearLayout2"
         android:layout_alignRight="@+id/linearLayout2"
-        android:layout_alignEnd="@+id/linearLayout2" />
+        android:layout_alignStart="@+id/linearLayout2"
+        android:layout_below="@+id/linearLayout2"
+        android:layout_marginTop="10dp"
+        android:background="@mipmap/background_bt"
+        android:text="@string/login"
+        android:textColor="@color/colorwhite"
+        android:textSize="18dp" />
 
     <TextView
-        android:textSize="16sp"
-        android:textColor="@color/colorwhite"
-        android:text="@string/register"
+        android:id="@+id/txt_resgiter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/bt_login"
         android:layout_alignLeft="@+id/bt_login"
         android:layout_alignStart="@+id/bt_login"
+        android:layout_below="@+id/bt_login"
         android:layout_marginTop="18dp"
-        android:id="@+id/txt_resgiter" />
+        android:text="@string/register"
+        android:textColor="@color/colorwhite"
+        android:textSize="16sp" />
 
     <TextView
-        android:textSize="16sp"
-        android:textColor="@color/colorwhite"
-        android:text="@string/forgot_password"
+        android:id="@+id/txt_fogotpassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/txt_resgiter"
-        android:layout_alignRight="@+id/bt_login"
         android:layout_alignEnd="@+id/bt_login"
-        android:id="@+id/txt_fogotpassword" />
+        android:layout_alignRight="@+id/bt_login"
+        android:layout_alignTop="@+id/txt_resgiter"
+        android:text="@string/forgot_password"
+        android:textColor="@color/colorwhite"
+        android:textSize="16sp" />
 
 
 </RelativeLayout>
