@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -24,6 +26,8 @@ import ngochung.app.Untils.SharedConfig;
 
 public class MainActivity extends AppCompatActivity {
     public static String MAIN_LOG="MainActivity";
+    private EditText ed_message;
+    private Button bt_send;
     private Socket mSocket;
     {
      try {
@@ -37,11 +41,23 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        init();
         showToast(new SharedConfig(getBaseContext()).getValueBoolean(SharedConfig.LOGIN)+"    "+new SharedConfig(getBaseContext()).getValueString(SharedConfig.ACCESS_TOKEN));
         mSocket.on("new message", onNewMessage);
         mSocket.connect();
-    }
 
+        bt_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                attemptSend(ed_message);
+            }
+        });
+    }
+    public void init(){
+        ed_message=(EditText)findViewById(R.id.ed_content);
+        bt_send=(Button)findViewById(R.id.bt_send);
+
+    }
     public void showToast(String msg){
         Toast.makeText(MainActivity.this,msg,Toast.LENGTH_SHORT).show();
 

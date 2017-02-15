@@ -83,6 +83,7 @@ public class LoginActivity extends AppCompatActivity {
                             new SharedConfig(getBaseContext()).setValueBoolean(SharedConfig.LOGIN, true);
                             new SharedConfig(getBaseContext()).setValueString(SharedConfig.ACCESS_TOKEN,permissionJson.getString(Constants.ACCESS_TOKEN));
                             IntenStart(MainActivity.class);
+                            finish();
 
                         }else {
                             showToast(getResources().getString(R.string.login_fail));

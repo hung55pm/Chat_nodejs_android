@@ -21,4 +21,6 @@
     <string name="not_connect_internet">No network connection</string>
     <string name="try_again">Try</string>
     <string name="exit">Exit</string>
+    <string name="send">Send</string>
+    <string name="enter_message">Enter your message here</string>
 </resources>
