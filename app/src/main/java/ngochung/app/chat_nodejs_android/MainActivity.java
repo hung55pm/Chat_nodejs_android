@@ -14,14 +14,19 @@ import android.widget.Toast;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import ngochung.app.Applications.MyApplication;
 import ngochung.app.Constants.Constants;
+import ngochung.app.Models.Message;
 import ngochung.app.Untils.SharedConfig;
 
 public class MainActivity extends AppCompatActivity {
@@ -69,24 +74,37 @@ public class MainActivity extends AppCompatActivity {
         }
 
         mInputMessageView.setText("");
-        mSocket.emit("new message", message);
+        SharedConfig share= new SharedConfig(getBaseContext());
+        String name=share.getValueString(SharedConfig.ACCESS_TOKEN);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
+        Message msg= new Message(name,message,date);
+        Gson gson = new Gson();
+        String jsonInString = gson.toJson(msg);
+        mSocket.emit("new message", jsonInString);
     }
     private Emitter.Listener onNewMessage = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
+
             JSONObject data = (JSONObject) args[0];
             String username;
             String message;
             try {
-                username = data.getString("username");
+                username = data.getString("name");
                 message = data.getString("message");
             } catch (JSONException e) {
                 return;
             }
 
-            // add the message to view
+            Log.i(MAIN_LOG,username+"   "+message);
             //addMessage(username, message);
         }
     };
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mSocket.disconnect();
+        mSocket.off("new message", onNewMessage);
+    }
 }
