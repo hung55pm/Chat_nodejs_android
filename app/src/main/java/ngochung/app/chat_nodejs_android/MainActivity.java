@@ -1,14 +1,26 @@
 package ngochung.app.chat_nodejs_android;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.nkzawa.emitter.Emitter;
@@ -26,13 +38,22 @@ import java.util.Date;
 
 import ngochung.app.Applications.MyApplication;
 import ngochung.app.Constants.Constants;
+import ngochung.app.Fragments.FriendsFragment;
+import ngochung.app.Fragments.MessageFragment;
+import ngochung.app.Fragments.SearchFragment;
 import ngochung.app.Models.Message;
 import ngochung.app.Untils.SharedConfig;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,
+        NavigationView.OnNavigationItemSelectedListener{
+
+    public static Boolean FLAG=false;
+
+
     public static String MAIN_LOG="MainActivity";
-    private EditText ed_message;
-    private Button bt_send;
+    private  Toolbar toolbar;
+    private TextView tollbarTitle;
+    private EditText ed_search;
     private Socket mSocket;
     {
      try {
@@ -51,17 +72,65 @@ public class MainActivity extends AppCompatActivity {
         mSocket.on("new message", onNewMessage);
         mSocket.connect();
 
-        bt_send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                attemptSend(ed_message);
-            }
-        });
     }
     public void init(){
-        ed_message=(EditText)findViewById(R.id.ed_content);
-        bt_send=(Button)findViewById(R.id.bt_send);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ed_search=(EditText)findViewById(R.id.ed_search_friend);
+        setSupportActionBar(toolbar);
+        tollbarTitle=(TextView)findViewById(R.id.toolbar_title) ;
 
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        tollbarTitle.setText(getResources().getString(R.string.app_name));
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setItemIconTintList(null);
+        navigationView.setNavigationItemSelectedListener(this);
+        displayView(R.id.nav_message);
+
+    }
+
+    private void displayView(int position) {
+        tollbarTitle.setVisibility(View.VISIBLE);
+        ed_search.setVisibility(View.GONE);
+        Fragment fragment = null;
+        String title = getString(R.string.app_name);
+        switch (position) {
+            case R.id.nav_message:
+                fragment = new MessageFragment();
+                tollbarTitle.setText(getResources().getString(R.string.message));
+                break;
+            case R.id.nav_friend:
+                fragment = new FriendsFragment();
+                tollbarTitle.setText(getResources().getString(R.string.friend));
+                break;
+            case R.id.nav_search_friend:
+                fragment = new SearchFragment();
+                tollbarTitle.setText(getResources().getString(R.string.search));
+                break;
+            case R.id.nav_logout:
+                SharedConfig sh= new SharedConfig(this);
+                sh.setValueBoolean(SharedConfig.LOGIN,false);
+                sh.setValueString(SharedConfig.ACCESS_TOKEN,"");
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+                break;
+            default:
+                break;
+        }
+
+        if (fragment != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.container_body, fragment);
+            fragmentTransaction.commit();
+            getSupportActionBar().setTitle(title);
+        }
     }
     public void showToast(String msg){
         Toast.makeText(MainActivity.this,msg,Toast.LENGTH_SHORT).show();
@@ -106,5 +175,52 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         mSocket.disconnect();
         mSocket.off("new message", onNewMessage);
+        FLAG=false;
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        MenuItem item= menu.findItem(R.id.action_search);
+        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                if (FLAG==false) {
+                    tollbarTitle.setVisibility(View.GONE);
+                    ed_search.setVisibility(View.VISIBLE);
+                    FLAG=true;
+                }else {
+                    FLAG=false;
+                    if(!ed_search.getText().toString().equals("")){
+                        MyApplication.CHECK_SEARCH=true;
+                        MyApplication.PHONE_KEY_SEARCH_FRIEND=ed_search.getText().toString();
+                        displayView(R.id.nav_search_friend);
+                        ed_search.setText("");
+                    }else {
+                        tollbarTitle.setVisibility(View.VISIBLE);
+                        ed_search.setVisibility(View.GONE);
+
+                    }
+
+                }
+                return true;
+            }
+        });
+        return true;
+    }
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        displayView(id);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+
+    }
+
+
 }

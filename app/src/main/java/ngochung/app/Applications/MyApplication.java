@@ -16,8 +16,8 @@ import ngochung.app.Untils.SharedConfig;
 public class MyApplication extends Application {
 
     private static MyApplication mInstance;
-    public static boolean login;
-    public static String access_token;
+    public static String PHONE_KEY_SEARCH_FRIEND="";
+    public static Boolean CHECK_SEARCH=false;
 
     public static MyApplication getInstance() {
         return mInstance;
@@ -28,13 +28,6 @@ public class MyApplication extends Application {
         super.onCreate();
         mInstance = this;
 
-        getStatusLogin(this);
-    }
-
-    public void getStatusLogin(Context context) {
-//        SharedPreferences shared = new SharedConfig(context).GetConfig();
-//        login = shared.getBoolean(SharedConfig.LOGIN, false);
-//        access_token = shared.getString(SharedConfig.ACCESS_TOKEN,"");
     }
 
 }

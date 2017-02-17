@@ -23,6 +23,11 @@ public class Acounts {
         this.password = password;
     }
 
+    public Acounts(String user_id, String name) {
+        this.user_id = user_id;
+        this.name = name;
+    }
+
     public java.lang.String getUser_id() {
         return user_id;
     }

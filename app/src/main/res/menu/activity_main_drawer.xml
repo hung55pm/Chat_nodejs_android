@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/gr1"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_message"
+            android:title="@string/message" />
+        <item
+            android:id="@+id/nav_friend"
+            android:title="@string/friend" />
+        <item
+            android:id="@+id/nav_search_friend"
+            android:title="@string/search" />
+    </group>
+    <group
+        android:id="@+id/gr2"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_logout"
+            android:title="@string/logout" />
+    </group>
+</menu>

@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">Chat_Nodejs_Android</string>
-    <string name="wellcome_splash">Wellcome to app chat</string>
+    <string name="app_name">ZooChat</string>
+    <string name="wellcome_splash">Wellcome to ZooChat</string>
     <string name="wellcome_to_login">Wellcome to login</string>
     <string name="wellcome_to_register">Wellcome to register</string>
     <string name="numbe_phone">Number phone</string>
@@ -23,4 +23,13 @@
     <string name="exit">Exit</string>
     <string name="send">Send</string>
     <string name="enter_message">Enter your message here</string>
+    <string name="enter_number_phone">Enter number phone</string>
+    <string name="logout">Logout</string>
+    <string name="navigation_drawer_open">Open Menu</string>
+    <string name="navigation_drawer_close">Close Menu</string>
+    <string name="message">Message</string>
+    <string name="friend">Friends</string>
+    <string name="search">Search</string>
+    <string name="add_friend">Add</string>
+    <string name="not_found">Not found</string>
 </resources>
