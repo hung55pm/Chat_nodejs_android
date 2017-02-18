@@ -62,7 +62,7 @@ public class SearchFragment extends Fragment {
                 public void onSuccess(JSONObject response) {
                     try {
                         int code=response.getInt(Constants.CODE);
-                        if(code==200){
+                        if(code==200|| code==300){
                             JSONArray jsonArray= response.getJSONArray(Constants.RESULT);
                             ArrayList<Acounts> arr= new ArrayList<Acounts>();
                             if(jsonArray.length()!=0){
@@ -71,8 +71,14 @@ public class SearchFragment extends Fragment {
                                     Acounts ac = new Gson().fromJson(jsonArray.getJSONObject(i).toString(), Acounts.class);
                                     arr.add(ac);
                                 }
-                                adapters= new SearchFriendAdapters(getActivity(),arr);
-                                lv.setAdapter(adapters);
+                                if (code == 200) {
+                                    adapters= new SearchFriendAdapters(getActivity(),arr,false);
+                                    lv.setAdapter(adapters);
+                                }else {
+                                    adapters= new SearchFriendAdapters(getActivity(),arr,true);
+                                    lv.setAdapter(adapters);
+                                }
+
 
                             }else {
                                 txt_title_tb.setVisibility(View.VISIBLE);

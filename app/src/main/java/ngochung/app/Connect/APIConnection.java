@@ -124,7 +124,7 @@ public class APIConnection {
     public static void addfriend(Context context, String phone, final String access_token, final JSONObjectRequestListener callback) throws JSONException {
 
         final JSONObject jsonBody = new JSONObject();
-        jsonBody.put(Constants.PHONE, phone);
+        jsonBody.put(Constants.FRIEND_ID, phone);
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, Constants.URL_ADD_FRIENDS, jsonBody, new Response.Listener<JSONObject>() {
 
             @Override

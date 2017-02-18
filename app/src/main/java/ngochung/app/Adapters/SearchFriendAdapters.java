@@ -9,9 +9,19 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
+import ngochung.app.Applications.MyApplication;
+import ngochung.app.Connect.APIConnection;
+import ngochung.app.Connect.JSONObjectRequestListener;
+import ngochung.app.Constants.Constants;
 import ngochung.app.Models.Acounts;
+import ngochung.app.Untils.SharedConfig;
 import ngochung.app.chat_nodejs_android.MainActivity;
 import ngochung.app.chat_nodejs_android.R;
 
@@ -24,11 +34,13 @@ public class SearchFriendAdapters extends BaseAdapter {
     private Context mContext;
     private TextView txt_name, txt_phone;
     private Button bt_add;
+    private Boolean check;
     private LayoutInflater inflater=null;
 
-    public SearchFriendAdapters(Context mContext, ArrayList<Acounts> data) {
+    public SearchFriendAdapters(Context mContext, ArrayList<Acounts> data,Boolean check) {
         this.mContext = mContext;
         this.data = data;
+        this.check=check;
         inflater = (LayoutInflater) mContext.getSystemService(mContext.LAYOUT_INFLATER_SERVICE);
 
     }
@@ -58,13 +70,19 @@ public class SearchFriendAdapters extends BaseAdapter {
         }
         txt_name.setText(data.get(position).getName());
         txt_phone.setText(data.get(position).getUser_id());
-
-        bt_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showToast("add friend: " + position);
-            }
-        });
+        if(check==true){
+            bt_add.setText(mContext.getResources().getString(R.string.sent_invitations));
+            bt_add.setEnabled(false);
+        }else {
+            bt_add.setText(mContext.getResources().getString(R.string.add_friend));
+            bt_add.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    add_friends(data.get(position).getUser_id());
+                    showToast("add friend: " + position);
+                }
+            });
+        }
 
         return convertView;
     }
@@ -72,5 +90,35 @@ public class SearchFriendAdapters extends BaseAdapter {
     public void showToast(String msg) {
         Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
 
+    }
+    public void add_friends(String phone){
+        String access=new SharedConfig(mContext).getValueString(SharedConfig.ACCESS_TOKEN);
+        try {
+            APIConnection.addfriend(mContext, phone, access, new JSONObjectRequestListener() {
+                @Override
+                public void onSuccess(JSONObject response) {
+                    try {
+                        int code =response.getInt(Constants.CODE);
+                        if(code==200){
+                            showToast("add friend success");
+                            bt_add.setText(mContext.getResources().getString(R.string.sent_invitations));
+                            bt_add.setEnabled(false);
+                        }else {
+                            showToast("add friend fail");
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        showToast(mContext.getResources().getString(R.string.err));
+                    }
+                }
+
+                @Override
+                public void onError(VolleyError error) {
+                    showToast(mContext.getResources().getString(R.string.err_voley));
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

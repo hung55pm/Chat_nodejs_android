@@ -29,7 +29,13 @@
     <string name="navigation_drawer_close">Close Menu</string>
     <string name="message">Message</string>
     <string name="friend">Friends</string>
+    <string name="friend_list">List Friends</string>
+    <string name="friend_request">Invitation</string>
     <string name="search">Search</string>
     <string name="add_friend">Add</string>
     <string name="not_found">Not found</string>
+    <string name="err_voley">Err from voley</string>
+    <string name="sent_invitations">Sent</string>
+    <string name="button_ok">Agree</string>
+    <string name="button_no">butter</string>
 </resources>
