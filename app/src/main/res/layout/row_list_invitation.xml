@@ -56,7 +56,7 @@
         <Button
             android:textColor="@color/colorwhite"
             android:layout_marginRight="5dp"
-            android:background="@mipmap/background_bt_dis"
+            android:background="@mipmap/background_ed_user"
             android:layout_gravity="center"
             android:text="@string/button_no"
             android:layout_width="60dp"
