@@ -29,6 +29,7 @@
     <string name="navigation_drawer_close">Close Menu</string>
     <string name="message">Message</string>
     <string name="friend">Friends</string>
+    <string name="watched">Watched</string>
     <string name="friend_list">List Friends</string>
     <string name="friend_request">Invitation</string>
     <string name="search">Search</string>

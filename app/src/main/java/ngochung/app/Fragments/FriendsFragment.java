@@ -35,7 +35,7 @@ public class FriendsFragment extends Fragment {
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
         adapter.addFragment(new ListFriendFragment(), mContext.getResources().getString(R.string.friend_list));
-        adapter.addFragment(new FriendRequestFragment(), mContext.getResources().getString(R.string.friend_request));
+        adapter.addFragment(new InvitationFragment(), mContext.getResources().getString(R.string.friend_request));
         viewPager.setAdapter(adapter);
     }
 }

@@ -78,7 +78,7 @@ public class SearchFriendAdapters extends BaseAdapter {
             bt_add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    add_friends(data.get(position).getUser_id());
+                    add_friends(data.get(position).getUser_id(),data.get(position).getName());
                     showToast("add friend: " + position);
                 }
             });
@@ -91,10 +91,10 @@ public class SearchFriendAdapters extends BaseAdapter {
         Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
 
     }
-    public void add_friends(String phone){
+    public void add_friends(String phone, String name){
         String access=new SharedConfig(mContext).getValueString(SharedConfig.ACCESS_TOKEN);
         try {
-            APIConnection.addfriend(mContext, phone, access, new JSONObjectRequestListener() {
+            APIConnection.addfriend(mContext, phone,name, access, new JSONObjectRequestListener() {
                 @Override
                 public void onSuccess(JSONObject response) {
                     try {

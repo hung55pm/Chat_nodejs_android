@@ -11,7 +11,7 @@ public class Acounts {
     private String name;
     private String password;
     private Date birthday;
-    private int role;
+    private int status;
     private String address;
     private String email;
     private String access_token;
@@ -60,12 +60,12 @@ public class Acounts {
         this.birthday = birthday;
     }
 
-    public int getRole() {
-        return role;
+    public int getStatus() {
+        return status;
     }
 
-    public void setRole(int role) {
-        this.role = role;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public java.lang.String getAddress() {
