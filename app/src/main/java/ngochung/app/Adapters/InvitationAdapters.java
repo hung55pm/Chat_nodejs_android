@@ -28,8 +28,6 @@ import ngochung.app.chat_nodejs_android.R;
  */
 
 public class InvitationAdapters extends BaseAdapter {
-    private TextView phone, name;
-    private Button bt_agree, bt_disagree;
     private Context mContext;
     private ArrayList<Acounts> data;
     private LayoutInflater inflater = null;
@@ -57,39 +55,41 @@ public class InvitationAdapters extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
+
+        final viewHoller holler= new viewHoller();
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.row_list_invitation, parent, false);
-            phone = (TextView) convertView.findViewById(R.id.row_list_invitation_txt_numberphone);
-            name = (TextView) convertView.findViewById(R.id.row_list_invitation_txt_name);
-            bt_agree = (Button) convertView.findViewById(R.id.row_bt_list_invitation_ok);
-            bt_disagree = (Button) convertView.findViewById(R.id.row_bt_list_invitation_no);
-
+            holler.phone = (TextView) convertView.findViewById(R.id.row_list_invitation_txt_numberphone);
+            holler.name = (TextView) convertView.findViewById(R.id.row_list_invitation_txt_name);
+            holler.bt_agree = (Button) convertView.findViewById(R.id.row_bt_list_invitation_ok);
+            holler.bt_disagree = (Button) convertView.findViewById(R.id.row_bt_list_invitation_no);
+            convertView.setTag(holler);
         }
-        phone.setText(data.get(position).getUser_id());
-        name.setText(data.get(position).getName());
+        holler.phone.setText(data.get(position).getUser_id());
+        holler.name.setText(data.get(position).getName());
 
-        bt_agree.setOnClickListener(new View.OnClickListener() {
+        holler.bt_agree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showToast("" + position);
-                replyinvition(data.get(position).getUser_id(), 1, position);
+                replyinvition(data.get(position).getName(),data.get(position).getUser_id(), 1,holler);
             }
         });
 
-        bt_disagree.setOnClickListener(new View.OnClickListener() {
+        holler.bt_disagree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showToast("" + position);
-                replyinvition(data.get(position).getUser_id(), 2, position);
+                replyinvition(data.get(position).getName(),data.get(position).getUser_id(), 2,holler);
             }
         });
         return convertView;
     }
 
-    public void replyinvition(String friend_id, final int status, final int po) {
+    public void replyinvition(String name, String friend_id, final int status, final viewHoller holler) {
         String access_token = new SharedConfig(mContext).getValueString(SharedConfig.ACCESS_TOKEN);
         try {
-            APIConnection.friendreply(mContext, friend_id, status, access_token, new JSONObjectRequestListener() {
+            APIConnection.friendreply(mContext, name, friend_id, status, access_token, new JSONObjectRequestListener() {
                 @Override
                 public void onSuccess(JSONObject response) {
                     try {
@@ -97,14 +97,13 @@ public class InvitationAdapters extends BaseAdapter {
 
                         if (code == 200) {
                             if (status == 1) {
-
-                                bt_disagree.setVisibility(View.GONE);
-                                bt_agree.setText(mContext.getResources().getString(R.string.friend));
+                                holler.bt_disagree.setVisibility(View.GONE);
+                                holler.bt_agree.setText(mContext.getResources().getString(R.string.friend));
 
 
                             } else {
-                                bt_agree.setVisibility(View.GONE);
-                                bt_disagree.setText(mContext.getResources().getString(R.string.watched));
+                                holler.bt_agree.setVisibility(View.GONE);
+                                holler.bt_disagree.setText(mContext.getResources().getString(R.string.watched));
                             }
                         } else {
                             showToast(mContext.getResources().getString(R.string.retrieve_data_error));
@@ -129,5 +128,10 @@ public class InvitationAdapters extends BaseAdapter {
     public void showToast(String msg) {
         Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
 
+    }
+
+    public class viewHoller{
+         TextView phone, name;
+         Button bt_agree, bt_disagree;
     }
 }

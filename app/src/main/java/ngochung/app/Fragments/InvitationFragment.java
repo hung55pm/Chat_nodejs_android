@@ -68,13 +68,9 @@ public class InvitationFragment extends Fragment {
                                     Acounts ac = new Gson().fromJson(jsonArray.getJSONObject(i).toString(), Acounts.class);
                                     arr.add(ac);
                                 }
-                                if (code == 200) {
                                     adapters= new InvitationAdapters(getActivity(),arr);
                                     lv.setAdapter(adapters);
-                                }else {
-                                    adapters= new InvitationAdapters(getActivity(),arr);
-                                    lv.setAdapter(adapters);
-                                }
+
 
                             }
                         }else {
@@ -88,7 +84,7 @@ public class InvitationFragment extends Fragment {
 
                 @Override
                 public void onError(VolleyError error) {
-                        showToast(getResources().getString(R.string.err_voley));
+                        showToast(getResources().getString(R.string.err_voley)+"loiiiiii");
                 }
             });
         } catch (JSONException e) {
@@ -99,4 +95,6 @@ public class InvitationFragment extends Fragment {
         Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT).show();
 
     }
+
+
 }
