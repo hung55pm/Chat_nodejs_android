@@ -54,23 +54,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private  Toolbar toolbar;
     private TextView tollbarTitle;
     private EditText ed_search;
-    private Socket mSocket;
-    {
-     try {
-            mSocket= IO.socket(Constants.URL_SOCKET);
-     }catch (URISyntaxException e){
 
-     }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
-        showToast(new SharedConfig(getBaseContext()).getValueBoolean(SharedConfig.LOGIN)+"    "+new SharedConfig(getBaseContext()).getValueString(SharedConfig.ACCESS_TOKEN));
-        mSocket.on("new message", onNewMessage);
-        mSocket.connect();
+//        mSocket.on("new message", onNewMessage);
+//        mSocket.connect();
 
     }
     public void init(){
@@ -150,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Message msg= new Message(name,message,date);
         Gson gson = new Gson();
         String jsonInString = gson.toJson(msg);
-        mSocket.emit("new message", jsonInString);
+       // mSocket.emit("new message", jsonInString);
     }
     private Emitter.Listener onNewMessage = new Emitter.Listener() {
         @Override
@@ -173,8 +165,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mSocket.disconnect();
-        mSocket.off("new message", onNewMessage);
+//        mSocket.disconnect();
+//        mSocket.off("new message", onNewMessage);
         FLAG=false;
     }
     @Override

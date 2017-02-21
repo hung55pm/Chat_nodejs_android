@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import ngochung.app.Adapters.ViewPagerAdapter;
 import ngochung.app.chat_nodejs_android.R;
@@ -37,5 +38,9 @@ public class FriendsFragment extends Fragment {
         adapter.addFragment(new ListFriendFragment(), mContext.getResources().getString(R.string.friend_list));
         adapter.addFragment(new InvitationFragment(), mContext.getResources().getString(R.string.friend_request));
         viewPager.setAdapter(adapter);
+    }
+    public void showToast(String msg){
+        Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT).show();
+
     }
 }
