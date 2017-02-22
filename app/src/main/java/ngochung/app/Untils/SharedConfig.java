@@ -14,6 +14,7 @@ public class SharedConfig {
     public static final String LOGIN = "LOGIN";
     public static final String ACCESS_TOKEN = "ACCESS_TOKEN";
     public static final String USER_ID = "USER_ID";
+    public static final String NAME = "NAME";
 
     public SharedConfig(Context context) {
         this.context = context;

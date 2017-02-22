@@ -139,9 +139,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String name=share.getValueString(SharedConfig.ACCESS_TOKEN);
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
-        Message msg= new Message(name,message,date);
+        //Message msg= new Message(name,message,date);
         Gson gson = new Gson();
-        String jsonInString = gson.toJson(msg);
+       // String jsonInString = gson.toJson(msg);
        // mSocket.emit("new message", jsonInString);
     }
     private Emitter.Listener onNewMessage = new Emitter.Listener() {

@@ -29,10 +29,10 @@ public class Constants {
     public static final String USER_ID ="user_id";
     public static final String FRIEND_ID ="friend_id";
     public static final String STATUS ="status";
-    public static final String TYPE ="type";
-    public static final String KEY_TYPE_INVITATION ="invitation";
-    public static final String KEY_TYPE_FRIEND ="friend";
     public static final String KEY_CONNECT_1VS1 ="connect1vs1";
+    public static final String KEY_CHAT_1VS1 ="chat1vs1";
+    public static final String ROOM_ID ="room_id";
+
     public static final String MESSAGE ="message";
 
 

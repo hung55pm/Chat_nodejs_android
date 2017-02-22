@@ -83,6 +83,7 @@ public class LoginActivity extends AppCompatActivity {
                             new SharedConfig(getBaseContext()).setValueBoolean(SharedConfig.LOGIN, true);
                             new SharedConfig(getBaseContext()).setValueString(SharedConfig.USER_ID,permissionJson.getString(Constants.USER_ID));
                             new SharedConfig(getBaseContext()).setValueString(SharedConfig.ACCESS_TOKEN,permissionJson.getString(Constants.ACCESS_TOKEN));
+                            new SharedConfig(getBaseContext()).setValueString(SharedConfig.NAME,permissionJson.getString(Constants.NAME));
                             IntenStart(MainActivity.class);
                             finish();
 

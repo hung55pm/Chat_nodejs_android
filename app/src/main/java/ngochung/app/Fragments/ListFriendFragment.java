@@ -1,6 +1,7 @@
 package ngochung.app.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -28,8 +29,10 @@ import ngochung.app.Connect.APIConnection;
 import ngochung.app.Connect.JSONObjectRequestListener;
 import ngochung.app.Constants.Constants;
 import ngochung.app.Models.Acounts;
+import ngochung.app.Models.Room;
 import ngochung.app.Untils.SharedConfig;
 import ngochung.app.Untils.SocketioHandling;
+import ngochung.app.chat_nodejs_android.MessageDetailActivity;
 import ngochung.app.chat_nodejs_android.R;
 import com.github.nkzawa.socketio.client.Socket;
 /**
@@ -42,7 +45,6 @@ public class ListFriendFragment extends Fragment {
     ArrayList<Acounts> arr;
     Socket mSocket;
     String user_id;
-    String room1vs1;
     public ListFriendFragment() {
         // Required empty public constructor
     }
@@ -82,6 +84,12 @@ public class ListFriendFragment extends Fragment {
                 code = data.getInt(Constants.CODE);
                 message = data.getString(Constants.MESSAGE);
                 jsonObject=data.getJSONObject(Constants.RESULT);
+                if(code==200){
+                    Intent in = new Intent(getActivity(), MessageDetailActivity.class);
+                    in.putExtra(Constants.ROOM_ID,jsonObject.toString());
+                    getActivity().startActivity(in);
+                }
+
             } catch (JSONException e) {
                 return;
             }
@@ -90,6 +98,7 @@ public class ListFriendFragment extends Fragment {
             //addMessage(username, message);
         }
     };
+
     public void GetAllFrend() {
         String access_token= new SharedConfig(getActivity()).getValueString(SharedConfig.ACCESS_TOKEN);
         try {
