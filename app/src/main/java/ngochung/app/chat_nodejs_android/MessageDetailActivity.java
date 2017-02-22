@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Socket;
@@ -60,6 +61,7 @@ public class MessageDetailActivity extends AppCompatActivity {
                 String msg= contend.getText().toString();
                 if(!msg.equals("")){
                     SocketioHandling.socketsend1vs1(MessageDetailActivity.this,room.getRoom_id(),msg,mSocket);
+                    contend.setText("");
                 }
             }
         });
@@ -71,7 +73,17 @@ public class MessageDetailActivity extends AppCompatActivity {
         public void call(Object... args) {
 
             JSONObject data = (JSONObject) args[0];
-            Log.i("log","   "+data);
+
+            try {
+                int code=data.getInt(Constants.CODE);
+                JSONObject jsonObject= data.getJSONObject(Constants.RESULT);
+                Message message= new Gson().fromJson(jsonObject.toString(),Message.class);
+                appendMessage(message);
+                Log.i("logaaaa","   "+message.getMessage());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
             //addMessage(username, message);
         }
     };
