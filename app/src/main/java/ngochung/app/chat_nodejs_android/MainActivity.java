@@ -46,7 +46,6 @@ import ngochung.app.Untils.SharedConfig;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
         NavigationView.OnNavigationItemSelectedListener{
-
     public static Boolean FLAG=false;
 
 
@@ -61,8 +60,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
-//        mSocket.on("new message", onNewMessage);
-//        mSocket.connect();
 
     }
     public void init(){
@@ -128,45 +125,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toast.makeText(MainActivity.this,msg,Toast.LENGTH_SHORT).show();
 
     }
-    private void attemptSend(EditText mInputMessageView ) {
-        String message = mInputMessageView.getText().toString().trim();
-        if (TextUtils.isEmpty(message)) {
-            return;
-        }
 
-        mInputMessageView.setText("");
-        SharedConfig share= new SharedConfig(getBaseContext());
-        String name=share.getValueString(SharedConfig.ACCESS_TOKEN);
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        Date date = new Date();
-        //Message msg= new Message(name,message,date);
-        Gson gson = new Gson();
-       // String jsonInString = gson.toJson(msg);
-       // mSocket.emit("new message", jsonInString);
-    }
-    private Emitter.Listener onNewMessage = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-
-            JSONObject data = (JSONObject) args[0];
-            String username;
-            String message;
-            try {
-                username = data.getString("name");
-                message = data.getString("message");
-            } catch (JSONException e) {
-                return;
-            }
-
-            Log.i(MAIN_LOG,username+"   "+message);
-            //addMessage(username, message);
-        }
-    };
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        mSocket.disconnect();
-//        mSocket.off("new message", onNewMessage);
         FLAG=false;
     }
     @Override
@@ -213,6 +175,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
 
     }
-
 
 }

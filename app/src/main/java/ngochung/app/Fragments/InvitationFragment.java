@@ -1,7 +1,9 @@
 package ngochung.app.Fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +33,7 @@ import ngochung.app.chat_nodejs_android.R;
  */
 
 public class InvitationFragment extends Fragment {
+    Context mContext;
     private InvitationAdapters adapters;
     private ListView lv;
     public InvitationFragment() {
@@ -46,6 +49,7 @@ public class InvitationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragmet_invitation, container, false);
+        mContext=getActivity();
         lv=(ListView)view.findViewById(R.id.lv_list_friend_request);
         GetAllInvitation();
 
@@ -53,9 +57,9 @@ public class InvitationFragment extends Fragment {
     }
 
     public void GetAllInvitation() {
-        String access_token= new SharedConfig(getActivity()).getValueString(SharedConfig.ACCESS_TOKEN);
+        String access_token= new SharedConfig(mContext).getValueString(SharedConfig.ACCESS_TOKEN);
         try {
-            APIConnection.getallinvitation(getActivity(), access_token, new JSONObjectRequestListener() {
+            APIConnection.getallinvitation(mContext, access_token, new JSONObjectRequestListener() {
                 @Override
                 public void onSuccess(JSONObject response) {
                     try {
@@ -68,7 +72,7 @@ public class InvitationFragment extends Fragment {
                                     Acounts ac = new Gson().fromJson(jsonArray.getJSONObject(i).toString(), Acounts.class);
                                     arr.add(ac);
                                 }
-                                    adapters= new InvitationAdapters(getActivity(),arr);
+                                    adapters= new InvitationAdapters(mContext,arr);
                                     lv.setAdapter(adapters);
 
 
@@ -92,9 +96,14 @@ public class InvitationFragment extends Fragment {
         }
     }
     public void showToast(String msg){
-        Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext,msg,Toast.LENGTH_SHORT).show();
 
     }
 
-
+    @Override
+    public void onResume() {
+        Log.i("aaaa","kkkkkkkkk");
+        GetAllInvitation();
+        super.onResume();
+    }
 }

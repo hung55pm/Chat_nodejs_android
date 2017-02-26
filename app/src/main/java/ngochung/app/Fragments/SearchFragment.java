@@ -35,6 +35,7 @@ import ngochung.app.chat_nodejs_android.R;
  */
 
 public class SearchFragment extends Fragment {
+    Context mContext;
     public static String SFLOG="SearchFragment";
     private SearchFriendAdapters adapters;
     private ListView lv;
@@ -43,6 +44,7 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
+        mContext=getActivity();
         lv=(ListView)view.findViewById(R.id.lv_result_search_friend) ;
         txt_title_tb=(TextView)view.findViewById(R.id.txt_thongbao);
         if(MyApplication.CHECK_SEARCH==true){
@@ -55,9 +57,9 @@ public class SearchFragment extends Fragment {
     }
 
     public void search(String phone){
-        String access_token=new SharedConfig(getActivity()).getValueString(SharedConfig.ACCESS_TOKEN);
+        String access_token=new SharedConfig(mContext).getValueString(SharedConfig.ACCESS_TOKEN);
         try {
-            APIConnection.searchfriend(getActivity(), phone,access_token, new JSONObjectRequestListener() {
+            APIConnection.searchfriend(mContext, phone,access_token, new JSONObjectRequestListener() {
                 @Override
                 public void onSuccess(JSONObject response) {
                     try {
@@ -72,10 +74,10 @@ public class SearchFragment extends Fragment {
                                     arr.add(ac);
                                 }
                                 if (code == 200) {
-                                    adapters= new SearchFriendAdapters(getActivity(),arr,false);
+                                    adapters= new SearchFriendAdapters(mContext,arr,false);
                                     lv.setAdapter(adapters);
                                 }else {
-                                    adapters= new SearchFriendAdapters(getActivity(),arr,true);
+                                    adapters= new SearchFriendAdapters(mContext,arr,true);
                                     lv.setAdapter(adapters);
                                 }
 
@@ -103,7 +105,7 @@ public class SearchFragment extends Fragment {
         }
     }
     public void showToast(String msg){
-        Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext,msg,Toast.LENGTH_SHORT).show();
 
     }
 }

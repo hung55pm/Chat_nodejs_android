@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import ngochung.app.Adapters.ViewPagerAdapter;
 import ngochung.app.chat_nodejs_android.R;
 
@@ -21,6 +23,8 @@ public class FriendsFragment extends Fragment {
     Context mContext;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    ViewPagerAdapter adapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -28,19 +32,37 @@ public class FriendsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_friends, container, false);
         viewPager = (ViewPager) view.findViewById(R.id.viewpager);
         setupViewPager(viewPager);
-
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+       viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+           @Override
+           public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+           }
+
+           @Override
+           public void onPageSelected(int position) {
+               adapter.mFragmentList.get(position).onResume();
+           }
+
+           @Override
+           public void onPageScrollStateChanged(int state) {
+
+           }
+       });
         return view;
     }
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
+        adapter = new ViewPagerAdapter(getChildFragmentManager());
         adapter.addFragment(new ListFriendFragment(), mContext.getResources().getString(R.string.friend_list));
         adapter.addFragment(new InvitationFragment(), mContext.getResources().getString(R.string.friend_request));
         viewPager.setAdapter(adapter);
-    }
-    public void showToast(String msg){
-        Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT).show();
 
     }
+    public void showToast(String msg){
+        Toast.makeText(mContext,msg,Toast.LENGTH_SHORT).show();
+
+    }
+
+
 }

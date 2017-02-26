@@ -16,6 +16,8 @@ public class Constants {
     public static final String URL_GET_ALL_INVITATION = URL_HOST + "/api/getall-invitaion";
     public static final String URL_GET_ALL_FRIEND = URL_HOST + "/api/getall-friend";
     public static final String URL_FRIEND_REPLY = URL_HOST + "/api/friend-reply";
+    public static final String URL_GET_MESRECENT = URL_HOST + "/api/get-mesrecent";
+    public static final String URL_GET_MESSAGE_DETAIL = URL_HOST + "/api/get-mes-detail";
 
 
     public static final String PHONE ="phone";

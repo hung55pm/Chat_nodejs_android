@@ -239,4 +239,61 @@ public class APIConnection {
         };
         MySingleton.getInstance(context).addToRequestQueue(jsObjRequest);
     }
+    public static void getMessRecent(Context context,final String access_token, final JSONObjectRequestListener callback) throws JSONException {
+
+        final JSONObject jsonBody = new JSONObject();
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, Constants.URL_GET_MESRECENT, jsonBody, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                callback.onSuccess(response);
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                callback.onError(error);
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/json");
+                params.put("Authorization", "access_token "+access_token);
+                params.put("charset", "utf-8");
+                return params;
+            }
+        };
+        MySingleton.getInstance(context).addToRequestQueue(jsObjRequest);
+    }
+    public static void getmessagedetail(Context context,String room_id,final String access_token, final JSONObjectRequestListener callback) throws JSONException {
+
+        final JSONObject jsonBody = new JSONObject();
+        jsonBody.put(Constants.ROOM_ID,room_id);
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, Constants.URL_GET_MESSAGE_DETAIL, jsonBody, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                callback.onSuccess(response);
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                callback.onError(error);
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/json");
+                params.put("Authorization", "access_token "+access_token);
+                params.put("charset", "utf-8");
+                return params;
+            }
+        };
+        MySingleton.getInstance(context).addToRequestQueue(jsObjRequest);
+    }
 }

@@ -45,6 +45,7 @@ public class ListFriendFragment extends Fragment {
     ArrayList<Acounts> arr;
     Socket mSocket;
     String user_id;
+    Context mContext;
     public ListFriendFragment() {
         // Required empty public constructor
     }
@@ -57,17 +58,21 @@ public class ListFriendFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
        View view=inflater.inflate(R.layout.fragment_list_friend, container, false);
+        mContext=getActivity();
         mSocket= MyApplication.mSocket;
-        user_id= new SharedConfig(getActivity()).getValueString(SharedConfig.USER_ID);
+        user_id= new SharedConfig(mContext).getValueString(SharedConfig.USER_ID);
         lv=(ListView)view.findViewById(R.id.lv_list_friend);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 SocketioHandling.socketchat1v1connect(user_id,arr.get(position).getUser_id(),mSocket);
                 mSocket.on(user_id, onNewMessage);
+
             }
         });
+
         GetAllFrend();
 
         return view;
@@ -78,31 +83,31 @@ public class ListFriendFragment extends Fragment {
 
             JSONObject data = (JSONObject) args[0];
             int code;
-            String message;
-            JSONObject jsonObject;
+            String room_id;
             try {
                 code = data.getInt(Constants.CODE);
-                message = data.getString(Constants.MESSAGE);
-                jsonObject=data.getJSONObject(Constants.RESULT);
+                room_id=data.getString(Constants.ROOM_ID);
                 if(code==200){
-                    Intent in = new Intent(getActivity(), MessageDetailActivity.class);
-                    in.putExtra(Constants.ROOM_ID,jsonObject.toString());
-                    getActivity().startActivity(in);
+                    Intent in = new Intent(mContext, MessageDetailActivity.class);
+                    in.putExtra(Constants.ROOM_ID,room_id);
+                    mContext.startActivity(in);
+                    mSocket.off(user_id);
+                    Log.i("lan thu i ","abc");
                 }
+
 
             } catch (JSONException e) {
                 return;
             }
 
-            Log.i("aaaa",code+"   "+message+" "+jsonObject);
             //addMessage(username, message);
         }
     };
 
     public void GetAllFrend() {
-        String access_token= new SharedConfig(getActivity()).getValueString(SharedConfig.ACCESS_TOKEN);
+        String access_token= new SharedConfig(mContext).getValueString(SharedConfig.ACCESS_TOKEN);
         try {
-            APIConnection.getallfriend(getActivity(), access_token, new JSONObjectRequestListener() {
+            APIConnection.getallfriend(mContext, access_token, new JSONObjectRequestListener() {
                 @Override
                 public void onSuccess(JSONObject response) {
                     try {
@@ -116,7 +121,7 @@ public class ListFriendFragment extends Fragment {
                                     arr.add(ac);
                                 }
 
-                                    adapters= new LitsfriendAdapters(getActivity(),arr);
+                                    adapters= new LitsfriendAdapters(mContext,arr);
                                     lv.setAdapter(adapters);
 
 
@@ -140,9 +145,22 @@ public class ListFriendFragment extends Fragment {
         }
     }
     public void showToast(String msg){
-        Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext,msg,Toast.LENGTH_SHORT).show();
 
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if(mSocket!=null) {
+            mSocket.off(user_id);
+        }
 
+    }
+    @Override
+    public void onResume() {
+        Log.i("aaaa","iiiiiiii");
+        GetAllFrend();
+        super.onResume();
+    }
 }
