@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -15,6 +17,9 @@ import com.android.volley.VolleyError;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Socket;
 import com.google.gson.Gson;
+import com.rockerhieu.emojicon.EmojiconGridFragment;
+import com.rockerhieu.emojicon.EmojiconsFragment;
+import com.rockerhieu.emojicon.emoji.Emojicon;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,7 +43,11 @@ import ngochung.app.Untils.SocketioHandling;
  * Created by NGOCHUNG on 2/22/2017.
  */
 
-public class MessageDetailActivity extends AppCompatActivity {
+public class MessageDetailActivity extends AppCompatActivity implements EmojiconGridFragment.OnEmojiconClickedListener,
+        EmojiconsFragment.OnEmojiconBackspaceClickedListener {
+    private static Boolean FLAG_ICON_CHAT= false;
+    private ImageView icon_chat;
+    private FrameLayout frameLayout;
     private Button btsend;
     private EditText contend;
     private ListView lv;
@@ -56,10 +65,25 @@ public class MessageDetailActivity extends AppCompatActivity {
         lv=(ListView)findViewById(R.id.lv_chat_detail);
         btsend=(Button)findViewById(R.id.bt_send);
         contend=(EditText)findViewById(R.id.ed_content);
+        icon_chat=(ImageView)findViewById(R.id.icon_chat);
+        frameLayout=(FrameLayout)findViewById(R.id.emojicons) ;
         Intent in = getIntent();
         room_id=in.getStringExtra(Constants.ROOM_ID);
         getallmessagebyroom_id(room_id);
         mSocket.on(room_id, onNewMessage);
+        icon_chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(FLAG_ICON_CHAT==false){
+                    frameLayout.setVisibility(View.VISIBLE);
+                    FLAG_ICON_CHAT=true;
+                    setEmojiconFragment(false);
+                }else {
+                    frameLayout.setVisibility(View.GONE);
+                    FLAG_ICON_CHAT=false;
+                }
+            }
+        });
         btsend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,7 +94,6 @@ public class MessageDetailActivity extends AppCompatActivity {
                 }
             }
         });
-        //Log.i("intent",room.getRoom_id()+"  "+room.getList().size());
 
     }
     private Emitter.Listener onNewMessage = new Emitter.Listener() {
@@ -89,7 +112,6 @@ public class MessageDetailActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            //addMessage(username, message);
         }
     };
 
@@ -102,8 +124,6 @@ public class MessageDetailActivity extends AppCompatActivity {
 
                 adapters.notifyDataSetChanged();
 
-                // Playing device's notification
-               // playBeep();
             }
         });
     }
@@ -151,10 +171,33 @@ public class MessageDetailActivity extends AppCompatActivity {
         Toast.makeText(MessageDetailActivity.this,msg,Toast.LENGTH_SHORT).show();
 
     }
+    private void setEmojiconFragment(boolean useSystemDefault) {
 
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.emojicons, EmojiconsFragment.newInstance(useSystemDefault))
+                .commit();
+    }
     @Override
     public void onBackPressed() {
+
+        if(FLAG_ICON_CHAT==true){
+            frameLayout.setVisibility(View.GONE);
+            FLAG_ICON_CHAT=false;
+        }else {
+            finish();
+        }
         super.onBackPressed();
-        finish();
+    }
+
+    @Override
+    public void onEmojiconClicked(Emojicon emojicon) {
+        EmojiconsFragment.input(contend, emojicon);
+    }
+
+    @Override
+    public void onEmojiconBackspaceClicked(View v) {
+        EmojiconsFragment.backspace(contend);
     }
 }

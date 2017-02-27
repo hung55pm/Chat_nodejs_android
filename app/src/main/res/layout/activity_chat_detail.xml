@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:background="@drawable/tile_bg"
@@ -24,12 +25,16 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="60dp">
-
-        <EditText
+        <ImageView
+            android:layout_gravity="center"
+            android:src="@mipmap/icon_smile"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/icon_chat"
+            />
+        <com.rockerhieu.emojicon.EmojiconEditText
+            android:background="#00000000"
             android:paddingLeft="10dp"
-            android:textColor="@color/colorwhite"
-            android:textColorHint="@color/colorwhite"
-            android:background="@color/colorsplash"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:inputType="textPersonName"
@@ -39,11 +44,19 @@
             android:layout_weight="1" />
 
         <Button
-            android:background="@mipmap/background_bt"
-            android:text="@string/send"
-            android:layout_width="25dp"
-            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:background="@mipmap/icon_send"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:id="@+id/bt_send"
-            android:layout_weight="1" />
+            />
     </LinearLayout>
+    <FrameLayout
+        android:visibility="gone"
+        android:id="@+id/emojicons"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 </LinearLayout>
