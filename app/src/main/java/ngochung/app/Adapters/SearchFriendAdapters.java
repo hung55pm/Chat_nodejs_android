@@ -92,9 +92,8 @@ public class SearchFriendAdapters extends BaseAdapter {
 
     }
     public void add_friends(String phone, String name){
-        String access=new SharedConfig(mContext).getValueString(SharedConfig.ACCESS_TOKEN);
         try {
-            APIConnection.addfriend(mContext, phone,name, access, new JSONObjectRequestListener() {
+            APIConnection.addfriend(mContext, phone,name, new JSONObjectRequestListener() {
                 @Override
                 public void onSuccess(JSONObject response) {
                     try {

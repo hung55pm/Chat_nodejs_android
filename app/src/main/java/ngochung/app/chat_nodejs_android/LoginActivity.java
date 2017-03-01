@@ -71,8 +71,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login(String phone, String pass){
+        String fcm_token = new SharedConfig(LoginActivity.this).getValueString(Constants.FCM_TOKEN);
         try {
-            APIConnection.login(LoginActivity.this, phone, pass, new JSONObjectRequestListener() {
+            APIConnection.login(LoginActivity.this,fcm_token, phone, pass, new JSONObjectRequestListener() {
                 @Override
                 public void onSuccess(JSONObject response) {
                     try {
@@ -80,7 +81,6 @@ public class LoginActivity extends AppCompatActivity {
                         if(code==200){
                             JSONObject permissionJson = response.getJSONObject(Constants.RESULT);
                             Log.i(APP_LOG,""+permissionJson.getString(Constants.ACCESS_TOKEN));
-                            new SharedConfig(getBaseContext()).setValueBoolean(SharedConfig.LOGIN, true);
                             new SharedConfig(getBaseContext()).setValueString(SharedConfig.USER_ID,permissionJson.getString(Constants.USER_ID));
                             new SharedConfig(getBaseContext()).setValueString(SharedConfig.ACCESS_TOKEN,permissionJson.getString(Constants.ACCESS_TOKEN));
                             new SharedConfig(getBaseContext()).setValueString(SharedConfig.NAME,permissionJson.getString(Constants.NAME));

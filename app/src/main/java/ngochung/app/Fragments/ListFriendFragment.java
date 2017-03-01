@@ -105,9 +105,8 @@ public class ListFriendFragment extends Fragment {
     };
 
     public void GetAllFrend() {
-        String access_token= new SharedConfig(mContext).getValueString(SharedConfig.ACCESS_TOKEN);
         try {
-            APIConnection.getallfriend(mContext, access_token, new JSONObjectRequestListener() {
+            APIConnection.getallfriend(mContext, new JSONObjectRequestListener() {
                 @Override
                 public void onSuccess(JSONObject response) {
                     try {

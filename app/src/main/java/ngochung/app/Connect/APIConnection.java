@@ -20,17 +20,19 @@ import ngochung.app.Applications.MyApplication;
 import ngochung.app.Constants.Constants;
 import ngochung.app.Models.Acounts;
 import ngochung.app.Untils.SharedConfig;
+import ngochung.app.chat_nodejs_android.MainActivity;
 
 /**
  * Created by HoangTien on 3/26/16.
  */
 public class APIConnection {
 
-    public static void login(Context context, String phone, String pass, final JSONObjectRequestListener callback) throws JSONException {
+    public static void login(Context context,String fcm_token, String phone, String pass, final JSONObjectRequestListener callback) throws JSONException {
 
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put(Constants.PHONE, phone);
         jsonBody.put(Constants.PASSWORD, pass);
+        jsonBody.put(Constants.KEY_FCM_TOKEN, fcm_token);
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, Constants.URL_LOGIN, jsonBody, new Response.Listener<JSONObject>() {
 
@@ -90,9 +92,66 @@ public class APIConnection {
         };
         MySingleton.getInstance(context).addToRequestQueue(jsObjRequest);
     }
+    public static void logout(Context context, final JSONObjectRequestListener callback) throws JSONException {
+        String fcm_token= new SharedConfig(context).getValueString(Constants.FCM_TOKEN);
+        Log.i("fmc_send",fcm_token);
+        final String access_token= new SharedConfig(context).getValueString(SharedConfig.ACCESS_TOKEN);
+        final JSONObject jsonBody = new JSONObject();
+        jsonBody.put(Constants.KEY_FCM_TOKEN,fcm_token);
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, Constants.URL_LOGOUT, jsonBody, new Response.Listener<JSONObject>() {
 
-    public static void searchfriend(Context context, String phone, final String access_token, final JSONObjectRequestListener callback) throws JSONException {
+            @Override
+            public void onResponse(JSONObject response) {
+                callback.onSuccess(response);
 
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                callback.onError(error);
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/json");
+                params.put("Authorization", "access_token "+access_token);
+                params.put("charset", "utf-8");
+                return params;
+            }
+        };
+        MySingleton.getInstance(context).addToRequestQueue(jsObjRequest);
+    }
+    public static void request(Context context,final String access_token, final JSONObjectRequestListener callback) throws JSONException {
+        final JSONObject jsonBody = new JSONObject();
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, Constants.URL_REQUEST, jsonBody, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                callback.onSuccess(response);
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                callback.onError(error);
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/json");
+                params.put("Authorization", "access_token "+access_token);
+                params.put("charset", "utf-8");
+                return params;
+            }
+        };
+        MySingleton.getInstance(context).addToRequestQueue(jsObjRequest);
+    }
+    public static void searchfriend(Context context, String phone, final JSONObjectRequestListener callback) throws JSONException {
+        final String access_token= new SharedConfig(context).getValueString(SharedConfig.ACCESS_TOKEN);
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put(Constants.PHONE, phone);
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, Constants.URL_SEARCH_FRIENDS, jsonBody, new Response.Listener<JSONObject>() {
@@ -121,8 +180,8 @@ public class APIConnection {
         MySingleton.getInstance(context).addToRequestQueue(jsObjRequest);
     }
 
-    public static void addfriend(Context context, String phone,String name, final String access_token, final JSONObjectRequestListener callback) throws JSONException {
-
+    public static void addfriend(Context context, String phone,String name, final JSONObjectRequestListener callback) throws JSONException {
+        final String access_token= new SharedConfig(context).getValueString(SharedConfig.ACCESS_TOKEN);
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put(Constants.FRIEND_ID, phone);
         jsonBody.put(Constants.NAME, name);
@@ -152,8 +211,8 @@ public class APIConnection {
         };
         MySingleton.getInstance(context).addToRequestQueue(jsObjRequest);
     }
-    public static void getallinvitation(Context context,final String access_token, final JSONObjectRequestListener callback) throws JSONException {
-
+    public static void getallinvitation(Context context, final JSONObjectRequestListener callback) throws JSONException {
+        final String access_token= new SharedConfig(context).getValueString(SharedConfig.ACCESS_TOKEN);
         final JSONObject jsonBody = new JSONObject();
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, Constants.URL_GET_ALL_INVITATION, jsonBody, new Response.Listener<JSONObject>() {
 
@@ -180,8 +239,8 @@ public class APIConnection {
         };
         MySingleton.getInstance(context).addToRequestQueue(jsObjRequest);
     }
-    public static void friendreply(Context context,String name,String frien_id, int status,final String access_token, final JSONObjectRequestListener callback) throws JSONException {
-
+    public static void friendreply(Context context,String name,String frien_id, int status, final JSONObjectRequestListener callback) throws JSONException {
+        final String access_token= new SharedConfig(context).getValueString(SharedConfig.ACCESS_TOKEN);
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put(Constants.FRIEND_ID, frien_id);
         jsonBody.put(Constants.STATUS, status);
@@ -211,8 +270,8 @@ public class APIConnection {
         };
         MySingleton.getInstance(context).addToRequestQueue(jsObjRequest);
     }
-    public static void getallfriend(Context context,final String access_token, final JSONObjectRequestListener callback) throws JSONException {
-
+    public static void getallfriend(Context context, final JSONObjectRequestListener callback) throws JSONException {
+        final String access_token= new SharedConfig(context).getValueString(SharedConfig.ACCESS_TOKEN);
         final JSONObject jsonBody = new JSONObject();
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, Constants.URL_GET_ALL_FRIEND, jsonBody, new Response.Listener<JSONObject>() {
 
@@ -239,8 +298,8 @@ public class APIConnection {
         };
         MySingleton.getInstance(context).addToRequestQueue(jsObjRequest);
     }
-    public static void getMessRecent(Context context,final String access_token, final JSONObjectRequestListener callback) throws JSONException {
-
+    public static void getMessRecent(Context context, final JSONObjectRequestListener callback) throws JSONException {
+        final String access_token= new SharedConfig(context).getValueString(SharedConfig.ACCESS_TOKEN);
         final JSONObject jsonBody = new JSONObject();
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, Constants.URL_GET_MESRECENT, jsonBody, new Response.Listener<JSONObject>() {
 
@@ -267,8 +326,8 @@ public class APIConnection {
         };
         MySingleton.getInstance(context).addToRequestQueue(jsObjRequest);
     }
-    public static void getmessagedetail(Context context,String room_id,final String access_token, final JSONObjectRequestListener callback) throws JSONException {
-
+    public static void getmessagedetail(Context context,String room_id, final JSONObjectRequestListener callback) throws JSONException {
+        final String access_token= new SharedConfig(context).getValueString(SharedConfig.ACCESS_TOKEN);
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put(Constants.ROOM_ID,room_id);
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, Constants.URL_GET_MESSAGE_DETAIL, jsonBody, new Response.Listener<JSONObject>() {

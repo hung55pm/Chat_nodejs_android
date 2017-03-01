@@ -43,14 +43,14 @@ public class MyApplication extends Application {
         super.onCreate();
         mInstance = this;
         mSocket.connect();
-        try {
-           // FirebaseInstanceId.getInstance().deleteInstanceId();
-            String token = FirebaseInstanceId.getInstance().getToken();
-            String msg = getString(R.string.msg_token_fmt, token);
-            Log.d("token", msg);
-        }catch (Exception e){
-            Log.d("token", e.toString());
-        }
+//        try {
+//           // FirebaseInstanceId.getInstance().deleteInstanceId();
+//            String token = FirebaseInstanceId.getInstance().getToken();
+//            String msg = getString(R.string.msg_token_fmt, token);
+//            Log.d("token", msg);
+//        }catch (Exception e){
+//            Log.d("token", e.toString());
+//        }
 
 
         // Log and toast

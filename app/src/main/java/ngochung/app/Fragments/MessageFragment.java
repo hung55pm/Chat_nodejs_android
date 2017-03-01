@@ -60,9 +60,8 @@ public class MessageFragment extends Fragment {
     }
 
     public void getMessageRecent(){
-        final String acc_token=new SharedConfig(mContext).getValueString(SharedConfig.ACCESS_TOKEN);
         try {
-            APIConnection.getMessRecent(mContext, acc_token, new JSONObjectRequestListener() {
+            APIConnection.getMessRecent(mContext, new JSONObjectRequestListener() {
                 @Override
                 public void onSuccess(JSONObject response) {
                     Log.i("abc",response.toString());

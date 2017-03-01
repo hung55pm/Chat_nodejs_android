@@ -87,9 +87,8 @@ public class InvitationAdapters extends BaseAdapter {
     }
 
     public void replyinvition(String name, String friend_id, final int status, final viewHoller holler) {
-        String access_token = new SharedConfig(mContext).getValueString(SharedConfig.ACCESS_TOKEN);
         try {
-            APIConnection.friendreply(mContext, name, friend_id, status, access_token, new JSONObjectRequestListener() {
+            APIConnection.friendreply(mContext, name, friend_id, status, new JSONObjectRequestListener() {
                 @Override
                 public void onSuccess(JSONObject response) {
                     try {

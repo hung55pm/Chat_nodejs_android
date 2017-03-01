@@ -57,9 +57,8 @@ public class InvitationFragment extends Fragment {
     }
 
     public void GetAllInvitation() {
-        String access_token= new SharedConfig(mContext).getValueString(SharedConfig.ACCESS_TOKEN);
         try {
-            APIConnection.getallinvitation(mContext, access_token, new JSONObjectRequestListener() {
+            APIConnection.getallinvitation(mContext, new JSONObjectRequestListener() {
                 @Override
                 public void onSuccess(JSONObject response) {
                     try {

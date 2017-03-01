@@ -10,6 +10,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import ngochung.app.Connect.APIConnection;
+import ngochung.app.Connect.JSONObjectRequestListener;
+import ngochung.app.Constants.Constants;
 import ngochung.app.Untils.SharedConfig;
 
 /**
@@ -36,14 +44,14 @@ public class SplashActivity extends Activity {
     }
 
     public void directLogin(){
-        Boolean login= new SharedConfig(getBaseContext()).getValueBoolean(SharedConfig.LOGIN);
-        if(login){
-            IntenStart(MainActivity.class);
-            finish();
-        }else {
+        String acc_token= new SharedConfig(SplashActivity.this).getValueString(SharedConfig.ACCESS_TOKEN);
+        if(acc_token.equals("")|| acc_token==null){
             IntenStart(LoginActivity.class);
             finish();
+        }else {
+            request(acc_token);
         }
+
     }
 
     public void IntenStart(Class cls){
@@ -82,5 +90,34 @@ public class SplashActivity extends Activity {
     public void showToast(String msg){
         Toast.makeText(SplashActivity.this,msg,Toast.LENGTH_SHORT).show();
 
+    }
+
+    public void request(String acc_token){
+        try {
+            APIConnection.request(SplashActivity.this, acc_token, new JSONObjectRequestListener() {
+                @Override
+                public void onSuccess(JSONObject response) {
+                    try {
+                        int code= response.getInt(Constants.CODE);
+                        if(code==200){
+                            IntenStart(MainActivity.class);
+                            finish();
+                        }else {
+                            IntenStart(LoginActivity.class);
+                            finish();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onError(VolleyError error) {
+
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

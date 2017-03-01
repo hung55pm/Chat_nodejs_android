@@ -21,6 +21,9 @@ import android.util.Log;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
+import ngochung.app.Constants.Constants;
+import ngochung.app.Untils.SharedConfig;
+
 
 public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
 
@@ -38,6 +41,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG, "Refreshed token: " + refreshedToken);
 
+       new SharedConfig(getApplicationContext()).setValueString(Constants.FCM_TOKEN,refreshedToken);
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // Instance ID token to your app server.

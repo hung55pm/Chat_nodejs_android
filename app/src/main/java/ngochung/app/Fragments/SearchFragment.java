@@ -57,9 +57,8 @@ public class SearchFragment extends Fragment {
     }
 
     public void search(String phone){
-        String access_token=new SharedConfig(mContext).getValueString(SharedConfig.ACCESS_TOKEN);
         try {
-            APIConnection.searchfriend(mContext, phone,access_token, new JSONObjectRequestListener() {
+            APIConnection.searchfriend(mContext, phone, new JSONObjectRequestListener() {
                 @Override
                 public void onSuccess(JSONObject response) {
                     try {

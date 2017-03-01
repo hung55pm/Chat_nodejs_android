@@ -129,9 +129,8 @@ public class MessageDetailActivity extends AppCompatActivity implements Emojicon
     }
 
     public void getallmessagebyroom_id(String room_id){
-        String acc_token= new SharedConfig(MessageDetailActivity.this).getValueString(SharedConfig.ACCESS_TOKEN);
         try {
-            APIConnection.getmessagedetail(MessageDetailActivity.this, room_id, acc_token, new JSONObjectRequestListener() {
+            APIConnection.getmessagedetail(MessageDetailActivity.this, room_id, new JSONObjectRequestListener() {
                 @Override
                 public void onSuccess(JSONObject response) {
                     try {

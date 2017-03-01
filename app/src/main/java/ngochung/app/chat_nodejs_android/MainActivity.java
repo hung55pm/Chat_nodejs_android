@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
@@ -38,6 +39,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import ngochung.app.Applications.MyApplication;
+import ngochung.app.Connect.APIConnection;
+import ngochung.app.Connect.JSONObjectRequestListener;
 import ngochung.app.Constants.Constants;
 import ngochung.app.Fragments.FriendsFragment;
 import ngochung.app.Fragments.MessageFragment;
@@ -103,12 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 tollbarTitle.setText(getResources().getString(R.string.search));
                 break;
             case R.id.nav_logout:
-                SharedConfig sh= new SharedConfig(this);
-                sh.setValueBoolean(SharedConfig.LOGIN,false);
-                sh.setValueString(SharedConfig.ACCESS_TOKEN,"");
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
+                logout();
                 break;
             default:
                 break;
@@ -177,8 +175,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public void firebase_admin(){
-        FirebaseMessaging.getInstance();
+    public void logout(){
+
+        try {
+            APIConnection.logout(MainActivity.this, new JSONObjectRequestListener() {
+                @Override
+                public void onSuccess(JSONObject response) {
+                    try {
+                        int code=response.getInt(Constants.CODE);
+                        if(code==200){
+                            SharedConfig sh= new SharedConfig(MainActivity.this);
+                            sh.setValueString(SharedConfig.ACCESS_TOKEN,"");
+                            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }else {
+                            showToast(getResources().getString(R.string.err));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onError(VolleyError error) {
+
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 }
