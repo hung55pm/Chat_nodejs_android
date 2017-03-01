@@ -10,8 +10,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Toast;
 
-import ngochung.app.Applications.MyApplication;
-import ngochung.app.Constants.Constants;
 import ngochung.app.Untils.SharedConfig;
 
 /**
@@ -24,6 +22,7 @@ public class SplashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

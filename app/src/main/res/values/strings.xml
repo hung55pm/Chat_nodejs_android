@@ -1,4 +1,5 @@
 <resources>
+    <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
     <string name="app_name">ZooChat</string>
     <string name="wellcome_splash">Wellcome to ZooChat</string>
     <string name="wellcome_to_login">Wellcome to login</string>
