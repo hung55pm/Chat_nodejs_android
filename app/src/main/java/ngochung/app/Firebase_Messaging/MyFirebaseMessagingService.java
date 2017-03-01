@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ngochung.app.chat_nodejs_android;
+package ngochung.app.Firebase_Messaging;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -64,6 +64,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
+            sendNotification(remoteMessage.getNotification().getBody());
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
         }
 

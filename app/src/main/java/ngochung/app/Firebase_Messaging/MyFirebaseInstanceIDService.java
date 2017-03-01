@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ngochung.app.chat_nodejs_android;
+package ngochung.app.Firebase_Messaging;
 
 import android.util.Log;
 

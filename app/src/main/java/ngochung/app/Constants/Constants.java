@@ -5,10 +5,10 @@ package ngochung.app.Constants;
  */
 
 public class Constants {
-//    public static final String URL_SOCKET = "http://192.168.6.103:4000";
-//    public static final String URL_HOST = "http://192.168.6.103:3000";
-    public static final String URL_HOST="http://192.168.1.22:3000";
-    public static final String URL_SOCKET="http://192.168.1.22:4000";
+    public static final String URL_SOCKET = "http://192.168.6.116:4000";
+    public static final String URL_HOST = "http://192.168.6.116:3000";
+//    public static final String URL_HOST="http://192.168.1.22:3000";
+//    public static final String URL_SOCKET="http://192.168.1.22:4000";
     public static final String URL_LOGIN = URL_HOST + "/api/login";
     public static final String URL_REGISTER = URL_HOST + "/api/register";
     public static final String URL_SEARCH_FRIENDS = URL_HOST + "/api/search-friend";
