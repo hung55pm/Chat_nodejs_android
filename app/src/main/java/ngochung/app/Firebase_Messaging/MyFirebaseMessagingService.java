@@ -27,8 +27,12 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.gson.Gson;
 
+import ngochung.app.Constants.Constants;
+import ngochung.app.Models.Message;
 import ngochung.app.chat_nodejs_android.MainActivity;
+import ngochung.app.chat_nodejs_android.MessageDetailActivity;
 import ngochung.app.chat_nodejs_android.R;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -64,8 +68,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
-            sendNotification(remoteMessage.getNotification().getBody());
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+            if(remoteMessage.getNotification().getTitle().equals("new message")) {
+                sendNotification("new message",remoteMessage.getNotification().getBody(), MessageDetailActivity.class);
+            }else {
+                sendNotification("inviation",remoteMessage.getNotification().getBody(), MainActivity.class);
+            }
+            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody().toString());
         }
 
         // Also if you intend on generating your own notifications as a result of a received FCM
@@ -78,8 +86,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      *
      * @param messageBody FCM message body received.
      */
-    private void sendNotification(String messageBody) {
-        Intent intent = new Intent(this, MainActivity.class);
+    private void sendNotification(String title,String messageBody, Class cls) {
+        Message mes= new Gson().fromJson(messageBody,Message.class);
+        String content= mes.getName()+": "+mes.getMessage();
+        Intent intent = new Intent(this, cls);
+        if(title.equals("new message")){
+            intent.putExtra(Constants.ROOM_ID,mes.getRoom_id());
+        }else {
+
+        }
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
@@ -87,8 +102,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.logo)
-                .setContentTitle("FCM Message")
-                .setContentText(messageBody)
+                .setContentTitle(title)
+                .setContentText(content)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
