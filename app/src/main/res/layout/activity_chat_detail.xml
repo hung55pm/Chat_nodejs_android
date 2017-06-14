@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
+    android:id="@+id/activity_chat_detail"
     android:background="@drawable/tile_bg"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="ngochung.app.chat_nodejs_android.MainActivity">
-
 
     <ListView
         android:divider="@null"
@@ -21,6 +19,7 @@
         android:layout_height="wrap_content" />
 
     <LinearLayout
+
         android:background="@mipmap/background_ed_user"
         android:orientation="horizontal"
         android:layout_width="match_parent"

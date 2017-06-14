@@ -5,8 +5,8 @@ package ngochung.app.Constants;
  */
 
 public class Constants {
-    public static final String URL_SOCKET = "http://192.168.6.105:4000";
-    public static final String URL_HOST = "http://192.168.6.105:3000";
+    public static final String URL_SOCKET = "http://192.168.6.101:4000";
+    public static final String URL_HOST = "http://192.168.6.101:3000";
 //    public static final String URL_HOST="http://192.168.1.22:3000";
 //    public static final String URL_SOCKET="http://192.168.1.22:4000";
     public static final String URL_LOGIN = URL_HOST + "/api/login";
@@ -40,10 +40,6 @@ public class Constants {
     public static final String ROOM_ID ="room_id";
     public static final String MESSAGE ="message";
     public static final String KEY_FCM_TOKEN ="fcm_token";
-
-
-
-
 
 
 

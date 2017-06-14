@@ -1,15 +1,26 @@
 package ngochung.app.chat_nodejs_android;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.inputmethodservice.KeyboardView;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -56,7 +67,8 @@ public class MessageDetailActivity extends AppCompatActivity implements Emojicon
     private Socket mSocket;
     private Room room;
     public static String room_id;
-
+    private LinearLayout rootView;
+    private  static int viewheight =0,keyboardwidth=0, editexheight=0;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +76,7 @@ public class MessageDetailActivity extends AppCompatActivity implements Emojicon
         mSocket= MyApplication.mSocket;
         lv=(ListView)findViewById(R.id.lv_chat_detail);
         btsend=(Button)findViewById(R.id.bt_send);
+        rootView=(LinearLayout)findViewById(R.id.activity_chat_detail) ;
         contend=(EditText)findViewById(R.id.ed_content);
         icon_chat=(ImageView)findViewById(R.id.icon_chat);
         frameLayout=(FrameLayout)findViewById(R.id.emojicons) ;
@@ -75,10 +88,21 @@ public class MessageDetailActivity extends AppCompatActivity implements Emojicon
             @Override
             public void onClick(View v) {
                 if(FLAG_ICON_CHAT==false){
+                    hideKeyboard(MessageDetailActivity.this);
+                    ViewGroup.LayoutParams params = frameLayout.getLayoutParams();
+                    params.height = viewheight-editexheight;
+                    frameLayout.requestLayout();
+                    Animation bottomUp = AnimationUtils.loadAnimation(MessageDetailActivity.this,
+                            R.anim.bottom_up);
+                    frameLayout.startAnimation(bottomUp);
                     frameLayout.setVisibility(View.VISIBLE);
                     FLAG_ICON_CHAT=true;
                     setEmojiconFragment(false);
                 }else {
+                    showKeyBoard();
+                    Animation bottomDown = AnimationUtils.loadAnimation(MessageDetailActivity.this,
+                            R.anim.bottom_down);
+                    frameLayout.startAnimation(bottomDown);
                     frameLayout.setVisibility(View.GONE);
                     FLAG_ICON_CHAT=false;
                 }
@@ -94,7 +118,46 @@ public class MessageDetailActivity extends AppCompatActivity implements Emojicon
                 }
             }
         });
+        rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int heightDiff = rootView.getRootView().getHeight() - rootView.getHeight();
 
+
+                if (heightDiff > 250) {
+                    Log.e("active",""+rootView.getRootView().getHeight()+"---"+rootView.getHeight());
+                    Log.e("MyActivity", "keyboard opened"+heightDiff);
+                    viewheight=heightDiff;
+
+                }
+
+                if (heightDiff < 250) {
+                    editexheight=heightDiff;
+                    Log.e("active",""+rootView.getRootView().getHeight()+"---"+rootView.getHeight());
+                    Log.e("MyActivity", "keyboard closed"+heightDiff);
+                }
+            }
+        });
+    }
+    public void hideKeyboard(Activity activity) {
+        if (activity != null) {
+            InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (activity.getCurrentFocus() != null && inputManager != null) {
+                inputManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+                inputManager.showSoftInputFromInputMethod(activity.getCurrentFocus().getWindowToken(), 0);
+            }
+        }
+    }
+
+    public void showKeyBoard(){
+        findViewById(R.id.ed_content).postDelayed(
+        new Runnable() {
+            public void run() {
+                contend.requestFocus();
+                InputMethodManager inputMethodManager =  (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.showSoftInput(contend,InputMethodManager.SHOW_IMPLICIT);
+            }
+        },100);
     }
     private Emitter.Listener onNewMessage = new Emitter.Listener() {
         @Override
@@ -180,16 +243,13 @@ public class MessageDetailActivity extends AppCompatActivity implements Emojicon
     }
     @Override
     public void onBackPressed() {
-
         if(FLAG_ICON_CHAT==true){
             frameLayout.setVisibility(View.GONE);
             FLAG_ICON_CHAT=false;
         }else {
-            finish();
+            super.onBackPressed();
         }
-        super.onBackPressed();
     }
-
     @Override
     public void onEmojiconClicked(Emojicon emojicon) {
         EmojiconsFragment.input(contend, emojicon);
